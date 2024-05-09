@@ -41,7 +41,7 @@ namespace DevBox.Tiles
 
                 }
 
-               // Console.WriteLine($"Evaluating node at position: ({currentNode.Position.X}, {currentNode.Position.Y})");
+               Console.WriteLine($"Evaluating node at position: ({currentNode.Position.X}, {currentNode.Position.Y})");
                 // move the current node from open to closed list
                 openList.Remove(currentNode);
                 closedList.Add(currentNode);
@@ -128,7 +128,7 @@ namespace DevBox.Tiles
 
         }
 
-        private List<Point> ConstructPath(Node node)
+        public List<Point> ConstructPath(Node node)
         {
             List<Point> path = new List<Point>();
 

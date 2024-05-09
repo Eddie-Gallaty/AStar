@@ -59,7 +59,7 @@ namespace DevBox.Tiles
             {
                 for (int y = 0; y < grid.GetLength(1); y++)
                 {
-                    int value = random.Next(2); //this will generate either 0 or 1
+                    int value = 0;// random.Next(2); //this will generate either 0 or 1
                     SetCell(x, y, value);
 
                 }

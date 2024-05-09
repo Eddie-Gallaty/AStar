@@ -41,7 +41,7 @@ public class Game1 : Game
     {
         // TODO: Add your initialization logic here
         _position = new Vector2(100, 100);
-        _map = new Map(20, 20, 32);
+        _map = new Map(20, 20, 16);
         
 
         base.Initialize();
@@ -114,10 +114,16 @@ public class Game1 : Game
         List<Point> path = astar.FindPath(start, goal);
 
         //check if path is found
-        Debug.WriteLine("Before the if statement");
+       // Debug.WriteLine("Before the if statement");
         if(path != null)
         {
-            Debug.WriteLine("inside the if statement");
+            Console.WriteLine("==============================");
+            Console.WriteLine("      PATHFINDING TIME");
+            Console.WriteLine("==============================");
+            Console.WriteLine("Start Position: "+start);
+            Console.WriteLine("Goal Position: "+goal);
+           
+            //Debug.WriteLine("inside the if statement");
             //output path coordinates  (DEBUG)
             foreach (Point point in path)
             {
@@ -131,6 +137,7 @@ public class Game1 : Game
         {
             //no paths were found
             Console.WriteLine("no path found");
+            //Console.WriteLine(path.Count);
         }
     }
     
