@@ -1,0 +1,6 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"/home/oryx/game-dev/DevBox/DevBox/Content/1463755790_large.jpg","/home/oryx/game-dev/DevBox/DevBox/Content/bin/DesktopGL/Content/1463755790_large.xnb","TextureProcessor","Texture2DContent",12618,160085,0.0697728
+"/home/oryx/game-dev/DevBox/DevBox/Content/hero.png","/home/oryx/game-dev/DevBox/DevBox/Content/bin/DesktopGL/Content/hero.xnb","TextureProcessor","Texture2DContent",158,1109,0.0013694
+"/home/oryx/game-dev/DevBox/DevBox/Content/tile1.png","/home/oryx/game-dev/DevBox/DevBox/Content/bin/DesktopGL/Content/tile1.xnb","TextureProcessor","Texture2DContent",127,1109,0.0007883
+"/home/oryx/game-dev/DevBox/DevBox/Content/tile2.png","/home/oryx/game-dev/DevBox/DevBox/Content/bin/DesktopGL/Content/tile2.xnb","TextureProcessor","Texture2DContent",145,1109,0.0003316
+"/home/oryx/game-dev/DevBox/DevBox/Content/tile3.png","/home/oryx/game-dev/DevBox/DevBox/Content/bin/DesktopGL/Content/tile3.xnb","TextureProcessor","Texture2DContent",145,1109,0.0003221
