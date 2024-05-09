@@ -60,6 +60,7 @@ public class Game1 : Game
 
         astar  = new AStar(_map);
         FindandUsePath();
+        Debug.WriteLine("Test");
 
   
 

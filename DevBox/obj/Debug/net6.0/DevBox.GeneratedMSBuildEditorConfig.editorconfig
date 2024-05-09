@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = DevBox
-build_property.ProjectDir = /home/oryx/game-dev/DevBox/DevBox/
+build_property.ProjectDir = /home/oryx/game-dev/AStar/DevBox/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

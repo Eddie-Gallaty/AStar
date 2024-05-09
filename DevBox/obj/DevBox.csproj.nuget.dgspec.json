@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/oryx/game-dev/DevBox/DevBox/DevBox.csproj": {}
+    "/home/oryx/game-dev/AStar/DevBox/DevBox.csproj": {}
   },
   "projects": {
-    "/home/oryx/game-dev/DevBox/DevBox/DevBox.csproj": {
+    "/home/oryx/game-dev/AStar/DevBox/DevBox.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/oryx/game-dev/DevBox/DevBox/DevBox.csproj",
+        "projectUniqueName": "/home/oryx/game-dev/AStar/DevBox/DevBox.csproj",
         "projectName": "DevBox",
-        "projectPath": "/home/oryx/game-dev/DevBox/DevBox/DevBox.csproj",
+        "projectPath": "/home/oryx/game-dev/AStar/DevBox/DevBox.csproj",
         "packagesPath": "/home/oryx/.nuget/packages/",
-        "outputPath": "/home/oryx/game-dev/DevBox/DevBox/obj/",
+        "outputPath": "/home/oryx/game-dev/AStar/DevBox/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/oryx/.nuget/NuGet/NuGet.Config"

@@ -4,11 +4,11 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>/home/oryx/game-dev/DevBox/DevBox/Content/1463755790_large.jpg</File>
-    <File>/home/oryx/game-dev/DevBox/DevBox/Content/hero.png</File>
-    <File>/home/oryx/game-dev/DevBox/DevBox/Content/tile1.png</File>
-    <File>/home/oryx/game-dev/DevBox/DevBox/Content/tile2.png</File>
-    <File>/home/oryx/game-dev/DevBox/DevBox/Content/tile3.png</File>
+    <File>/home/oryx/game-dev/AStar/DevBox/Content/1463755790_large.jpg</File>
+    <File>/home/oryx/game-dev/AStar/DevBox/Content/hero.png</File>
+    <File>/home/oryx/game-dev/AStar/DevBox/Content/tile1.png</File>
+    <File>/home/oryx/game-dev/AStar/DevBox/Content/tile2.png</File>
+    <File>/home/oryx/game-dev/AStar/DevBox/Content/tile3.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />
