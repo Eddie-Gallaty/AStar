@@ -24,6 +24,7 @@ public class Game1 : Game
     private Player _player;
     private Vector2 _position;
     private Map _map;
+    private List<Point> path; 
     private MapRenderer _mapRenderer;
 
     private AStar astar;
@@ -52,8 +53,8 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         Globals.SpriteBatch = _spriteBatch;
         _heroSprite = Content.Load<Texture2D>("hero");
-        _oneTile = Content.Load<Texture2D>("tile1");
-        _zeroTile = Content.Load<Texture2D>("tile3");
+        _oneTile = Content.Load<Texture2D>("tile3");
+        _zeroTile = Content.Load<Texture2D>("tile1");
         _map.GenerateRandomMap();
         
         _mapRenderer = new MapRenderer(_oneTile, _zeroTile, _map);
@@ -97,7 +98,10 @@ public class Game1 : Game
         // TODO: Add your drawing code here
         _spriteBatch.Begin();
         //_spriteBatch.Draw(_sprite, new Vector2(0,0), Color.White);
-        _mapRenderer.Draw();
+        //_mapRenderer.Draw(path);
+        
+            //Console.WriteLine(point);
+        _mapRenderer.Draw(path);
         _player.Draw();
         _spriteBatch.End();
 
@@ -107,11 +111,11 @@ public class Game1 : Game
     private void FindandUsePath()
     {
         Point start = new Point(0, 0); // start position
-        Point goal = new Point(10, 10); //goal
+        Point goal = new Point(19, 19); //goal
 
         //find optimal path
 
-        List<Point> path = astar.FindPath(start, goal);
+        path = astar.FindPath(start, goal);
 
         //check if path is found
        // Debug.WriteLine("Before the if statement");

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Xml;
 using Microsoft.Xna.Framework;
 
 
@@ -45,6 +46,8 @@ namespace DevBox.Tiles
                 // move the current node from open to closed list
                 openList.Remove(currentNode);
                 closedList.Add(currentNode);
+
+
 
                 //check if the goal has been reached
                 if (currentNode.Position == goalNode.Position)
@@ -96,10 +99,14 @@ namespace DevBox.Tiles
 
             Point[] offsets = new Point[]
             {
-                new Point(1, 0), //right
-                new Point(-1, 0), //left
-                new Point(0, 1), //down
-                new Point(0, -1) //up
+                new Point(1, 0),   // Right
+                new Point(0, 1),   // Down
+                new Point(-1, 0),  // Left
+                new Point(0, -1),  // Up
+                new Point(1, 1),   // Diagonal down-right
+                new Point(-1, 1),  // Diagonal down-left
+                new Point(-1, -1), // Diagonal up-left
+                new Point(1, -1)   // Diagonal up-right
 
             };
 
@@ -124,7 +131,10 @@ namespace DevBox.Tiles
         private int CalculateDistance(Node from, Node to)
         {
             //below im calculating Manhattan distance between two nodes
-            return Math.Abs(from.Position.X - to.Position.X) + Math.Abs(from.Position.Y - to.Position.Y);
+    // Calculate diagonal distance between two nodes (Euclidean distance)
+            int dx = Math.Abs(from.Position.X - to.Position.X);
+            int dy = Math.Abs(from.Position.Y - to.Position.Y);
+            return (int)Math.Sqrt(dx * dx + dy * dy);
 
         }
 
@@ -136,14 +146,30 @@ namespace DevBox.Tiles
             while (node != null)
             {
                 path.Add(node.Position);
+
+
+                foreach(Point nodeP in path)
+                {
+                    if (node.Position == nodeP)
+                    {
+                        
+                        
+                    }
+
+                }
                 node = node.Parent;
+
             }
             //reverse the path to get it in the correct order which is start to end
             path.Reverse();
+
 
             return path;
 
 
         }
+
+
+
     }
 }

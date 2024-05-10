@@ -11,6 +11,8 @@ namespace DevBox.Tiles
         public int FCost => GCost + HCost; //total cost (g + h)
         public Node Parent {get; set;} //parent node in the path
 
+        public bool IsPath {get; set;}
+
         public Node(int x, int y)
         {
             Position = new Point(x, y);
