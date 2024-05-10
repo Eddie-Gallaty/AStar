@@ -103,6 +103,7 @@ namespace DevBox.Tiles
                 new Point(0, 1),   // Down
                 new Point(-1, 0),  // Left
                 new Point(0, -1),  // Up
+                //comment all of this out for Manhattan
                 new Point(1, 1),   // Diagonal down-right
                 new Point(-1, 1),  // Diagonal down-left
                 new Point(-1, -1), // Diagonal up-left
@@ -130,8 +131,10 @@ namespace DevBox.Tiles
         
         private int CalculateDistance(Node from, Node to)
         {
+
             //below im calculating Manhattan distance between two nodes
-    // Calculate diagonal distance between two nodes (Euclidean distance)
+           //return Math.Abs(from.Position.X - to.Position.X) + Math.Abs(from.Position.Y - to.Position.Y);
+           // Euclidean distance (comment for manhattan )
             int dx = Math.Abs(from.Position.X - to.Position.X);
             int dy = Math.Abs(from.Position.Y - to.Position.Y);
             return (int)Math.Sqrt(dx * dx + dy * dy);
