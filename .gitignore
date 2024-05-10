@@ -4,7 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 #custom
-
+AStar/DevBox/bin/Debug/net6.
+AStar/DevBox/obj
 
 # User-specific files
 *.rsuser
