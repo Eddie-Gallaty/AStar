@@ -27,6 +27,9 @@ public class Game1 : Game
     private List<Point> path; 
     private MapRenderer _mapRenderer;
 
+    //this is used to hold the index of path
+    private int currentPathIndex;
+
     private AStar astar;
 
     public Game1()
@@ -41,7 +44,7 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-        _position = new Vector2(100, 100);
+        _position = new Vector2(300, 300);
         _map = new Map(20, 20, 16);
         
 
@@ -64,19 +67,22 @@ public class Game1 : Game
         Debug.WriteLine("Test");
 
   
+        //uncomment for keyboard control
 
-        _player = new Player(_heroSprite, _position);
+        /*_player = new Player(_heroSprite, _position);
         _player.Input = new Input();
         _player.Input.Left = Keys.A;
         _player.Input.Right = Keys.D;
         _player.Input.Up = Keys.W;
         _player.Input.Down = Keys.S;
 
-        
+        */
         
 
         // TODO: use this.Content to load your game content here
+        currentPathIndex = 0;
     }
+    
 
     protected override void Update(GameTime gameTime)
     {
@@ -84,8 +90,18 @@ public class Game1 : Game
             Exit();
 
         // TODO: Add your update logic here
-        _player.Update();
+        //_player.Update();
         //FindandUsePath();
+
+   for (int i = 0; i < path.Count; i++)
+            {
+                Vector2 targetPos = new Vector2(path[i].X, path[i].Y);
+                Vector2 direction = Vector2.Normalize(targetPos - _position);
+                float speed = 1f;
+
+                _position += direction * speed;
+
+            }
 
         base.Update(gameTime);
     }
@@ -97,12 +113,12 @@ public class Game1 : Game
 
         // TODO: Add your drawing code here
         _spriteBatch.Begin();
-        //_spriteBatch.Draw(_sprite, new Vector2(0,0), Color.White);
+        _spriteBatch.Draw(_heroSprite, _position, Color.White);
         //_mapRenderer.Draw(path);
         
             //Console.WriteLine(point);
         _mapRenderer.Draw(path);
-        _player.Draw();
+        //_player.Draw();
         _spriteBatch.End();
 
         base.Draw(gameTime);
@@ -115,7 +131,7 @@ public class Game1 : Game
 
         //find optimal path
 
-        path = astar.FindPath(start, goal);
+        path = astar.FindPath(start,goal);
 
         //check if path is found
        // Debug.WriteLine("Before the if statement");

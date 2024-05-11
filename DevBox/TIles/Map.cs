@@ -49,8 +49,6 @@ namespace DevBox.Tiles
             return grid[x, y];
         }
 
-
-
         //generate a random map
 
         public void GenerateRandomMap()

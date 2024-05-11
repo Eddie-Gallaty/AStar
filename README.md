@@ -1,2 +1,2 @@
 # AStar
-very simple A* Algo example using monogame.
+A very simple A* example using monogame.

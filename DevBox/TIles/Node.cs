@@ -16,7 +16,7 @@ namespace DevBox.Tiles
         public Node(int x, int y)
         {
             Position = new Point(x, y);
-            GCost = int.MaxValue; // initially set to infinity
+            GCost = int.MaxValue; 
             HCost = 0;
             Parent = null;
         }

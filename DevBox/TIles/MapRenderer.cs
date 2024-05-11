@@ -33,16 +33,16 @@ public void Draw(List<Point> path)
             int tileValue = map.GetCell(x, y);
             Vector2 position = new Vector2(x * cellSize, y * cellSize);
 
-            // Check if the current position is in the path
+            // checking path
             if (path != null && path.Contains(new Point(x, y)))
             {
-                // Draw the position with a different color (e.g., red)
+                // RED
                 Globals.SpriteBatch.Draw((tileValue == 0 ? walkable : blocked), position, Color.Red);
                 //Console.WriteLine("here");
             }
             else
             {
-                // Draw the position with the default color
+                // WHITE
                 Globals.SpriteBatch.Draw((tileValue == 0 ? walkable : blocked), position, Color.White);
                 //Console.WriteLine("Here");
             }

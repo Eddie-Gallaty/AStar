@@ -1,4 +1,3 @@
-
 using Microsoft.Xna.Framework.Graphics;
 using DevBox.Inputs;
 using Microsoft.Xna.Framework;
