@@ -6,6 +6,7 @@
 #custom
 AStar/DevBox/bin/Debug/net6.
 AStar/DevBox/obj
+AStar/DevBox/Scratch.cs
 
 # User-specific files
 *.rsuser

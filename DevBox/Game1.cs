@@ -46,7 +46,6 @@ public class Game1 : Game
         // TODO: Add your initialization logic here
         _position = new Vector2(300, 300);
         _map = new Map(20, 20, 16);
-        
 
         base.Initialize();
     }
@@ -81,6 +80,7 @@ public class Game1 : Game
 
         // TODO: use this.Content to load your game content here
         currentPathIndex = 0;
+        _scratch.CalcDiff();
     }
     
 
@@ -93,15 +93,15 @@ public class Game1 : Game
         //_player.Update();
         //FindandUsePath();
 
-   for (int i = 0; i < path.Count; i++)
-            {
-                Vector2 targetPos = new Vector2(path[i].X, path[i].Y);
-                Vector2 direction = Vector2.Normalize(targetPos - _position);
-                float speed = 1f;
+        if(currentPathIndex < path.Count)
+        {
+            Vector2 targetPos = new Vector2(path[currentPathIndex].X, path[currentPathIndex].Y);
+            Vector2 direction = Vector2.Normalize(targetPos - _position);
+            float speed = 1f;
 
-                _position += direction * speed;
+            _position += direction * speed;
 
-            }
+        }
 
         base.Update(gameTime);
     }
