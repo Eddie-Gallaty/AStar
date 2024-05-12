@@ -7,7 +7,7 @@
 AStar/DevBox/bin/Debug/net6.
 AStar/DevBox/obj
 /DevBox/Scratch
-
+/DevBox/test.cs
 # User-specific files
 *.rsuser
 *.suo
