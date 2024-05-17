@@ -80,7 +80,6 @@ public class Game1 : Game
 
         // TODO: use this.Content to load your game content here
         currentPathIndex = 0;
-        _scratch.CalcDiff();
     }
     
 
@@ -113,7 +112,7 @@ public class Game1 : Game
 
         // TODO: Add your drawing code here
         _spriteBatch.Begin();
-        _spriteBatch.Draw(_heroSprite, _position, Color.White);
+      //  _spriteBatch.Draw(_heroSprite, _position, Color.White);
         //_mapRenderer.Draw(path);
         
             //Console.WriteLine(point);
