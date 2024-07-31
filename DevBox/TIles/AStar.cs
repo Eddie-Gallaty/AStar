@@ -53,6 +53,7 @@ namespace DevBox.Tiles
                 if (currentNode.Position == goalNode.Position)
                 {
                     //construct the path then return it
+                    Console.WriteLine("Goal node position"+ currentNode.Position);
 
                     return ConstructPath(currentNode);
                 }

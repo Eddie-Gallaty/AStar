@@ -19,7 +19,7 @@ namespace DevBox.Sprites
             Origin = new Vector2(texture.Width / 2, texture.Height /2);
         }
 
-        public override void Update()
+        public  void Update()
         {
             Position += Velocity;
             Velocity = Vector2.Zero;
