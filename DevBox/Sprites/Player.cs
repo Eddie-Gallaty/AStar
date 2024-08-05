@@ -22,7 +22,7 @@ namespace DevBox.Sprites
         public  void Update()
         {
             Position += Velocity;
-            Velocity = Vector2.Zero;
+            //Velocity = Vector2.Zero;
 
             if (Keyboard.GetState().IsKeyDown(Input.Right))
             {

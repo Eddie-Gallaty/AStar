@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq.Expressions;
+using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using DevBox.Global;
@@ -38,6 +39,11 @@ public class Game1 : Game
 
     private AStar astar;
 
+    private Vector2 _velocity;
+    private Vector2 _targetPos; 
+    private Vector2 _velFontPOS;
+    private Vector2 _playerFontPOS;
+
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -50,9 +56,12 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-       // _position = new Vector2(0, 0);
-        _map = new Map(20, 20, 16);
+        _position = new Vector2(0, 0);
+        _map = new Map(25, 25, 16);
         _debugFontPOS = new Vector2(400, 50);
+        _velFontPOS = new Vector2(400, 100);
+        _playerFontPOS = new Vector2(400, 150);
+        _targetPos = new Vector2(0,0);
         
 
         base.Initialize();
@@ -88,53 +97,77 @@ public class Game1 : Game
         
 
         // TODO: use this.Content to load your game content here
-        currentPathIndex = 0;
+        //currentPathIndex = 0;
     }
     
 
-protected override void Update(GameTime gameTime)
-{
-    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-        Exit();
-
-    _player.Update(); // Update player logic (input handling, etc.)
-    bool EndOfPath = true;
-
-    // Check if there are remaining points in the path
-    while(EndOfPath)
+    protected override void Update(GameTime gameTime)
     {
-        //currentPathIndex++;
-        if(currentPathIndex +1 < path.Count)
-        {
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            Exit();
+
+        float speed = 1f;
+        _player.Update(); // Update player logic (input handling, etc.)
+        bool EndOfPath = true;
+        //Vector2 targetPos = new Vector2(path[currentPathIndex].X, path[currentPathIndex].Y);  //TOOK OUT OF LOOP
+        //Vector2 direction = Vector2.Normalize(_targetPos - _player.Position); // TOOK OUT OF LOOP
+        // Check if there are remaining points in the path
+        bool hello = true;
+        while(EndOfPath)
+            {
+                //currentPathIndex++;
+                if(currentPathIndex  + 1 < path.Count)
+                {
+                    
+                    _targetPos.X = path[currentPathIndex].X;
+                    _targetPos.Y = path[currentPathIndex].Y;
+
+                    Vector2 direction = Vector2.Normalize(_targetPos - _player.Position);
+
+
+                    _player.Velocity = direction * speed;
+                    _position += _player.Velocity;
+                    if ( _player.Velocity == Vector2.Zero)
+                    {
+                        Console.WriteLine("Velocity is Zero");
+                    }
+                    
+
+
+
+
+                    //Console.WriteLine("From the if loop in update Direction" + direction);
+
+                    //_position += direction * speed;
+                   // _player.Position += targetPos * 1
+                    //Console.WriteLine("From the if loop in update Position" + _position);  
+                    //Console.WriteLine("players position: " +_player.Position );
+                    Console.WriteLine("Player Velocity: " + _player.Velocity);
+                    Console.WriteLine("Direction: "+ direction);
+                    Console.WriteLine("Target Position"+_targetPos + " player POS "+_player.Position);
+                    Console.WriteLine("Current path index" +currentPathIndex+ " and path count"+path.Count); 
+                    Console.WriteLine("Distance to target" + Vector2.Distance(_player.Position, _targetPos));
+                    Console.WriteLine(path.Count); 
+                    currentPathIndex++;
+
+
+                }
+                
+                else
+                {
+                    EndOfPath = false;
+                    //_player.Velocity = Vector2.Zero;
+                    Console.WriteLine("leaving loop");
+                    //return;
+                    
+                }
+            }
+        
             
-            Vector2 targetPos = new Vector2(path[currentPathIndex].X, path[currentPathIndex].Y);
-            Vector2 direction = Vector2.Normalize(targetPos - _position);
-            float speed = .01f;
-            //Console.WriteLine("From the if loop in update Direction" + direction);
+        
 
-            //_position += direction * speed;
-            _player.Position += targetPos;
-            //Console.WriteLine("From the if loop in update Position" + _position);  
-            //Console.WriteLine("players position: " +_player.Position );
-            Console.WriteLine("Target Position"+targetPos + " player POS "+_player.Position);
-            Console.WriteLine("Current path index" +currentPathIndex+ " and path count"+path.Count); 
-            Console.WriteLine("Distance to target" + Vector2.Distance(_player.Position, targetPos));
-            Console.WriteLine(path.Count); 
-            currentPathIndex++;         
-
-
-        }
-        else
-        {
-            EndOfPath = false;
-            Console.WriteLine("leaving loop");
-            //return;
-            
-        }
+        base.Update(gameTime);
     }
-
-    base.Update(gameTime);
-}
 
     protected override void Draw(GameTime gameTime)
     {
@@ -147,7 +180,12 @@ protected override void Update(GameTime gameTime)
         //_mapRenderer.Draw(path);
             //Console.WriteLine(point);
         string posText = $"X: {_player.Position.X}, Y: {_player.Position.Y}";
+        string velText = $"Velocity {_player.Velocity}";
+        //string playText = $"Player pos{_player.Position}";
         _spriteBatch.DrawString(_debugFont, posText, _debugFontPOS, Color.Black);
+        _spriteBatch.DrawString(_debugFont , velText, _velFontPOS, Color.Black);
+       // _spriteBatch.DrawString(_debugFont, playText, _playerFontPOS, Color.Black);
+
         _mapRenderer.Draw(path);
         _player.Draw();
         _spriteBatch.End();
