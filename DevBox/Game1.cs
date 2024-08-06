@@ -181,9 +181,11 @@ public class Game1 : Game
             //Console.WriteLine(point);
         string posText = $"X: {_player.Position.X}, Y: {_player.Position.Y}";
         string velText = $"Velocity {_player.Velocity}";
+        string testText = "This is a test of the font kerning on MAC OS for mongame abcdefghijklmnopqrstuvwxyz";
         //string playText = $"Player pos{_player.Position}";
         _spriteBatch.DrawString(_debugFont, posText, _debugFontPOS, Color.Black);
         _spriteBatch.DrawString(_debugFont , velText, _velFontPOS, Color.Black);
+        _spriteBatch.DrawString(_debugFont, testText, new Vector2(400, 150), Color.White);
        // _spriteBatch.DrawString(_debugFont, playText, _playerFontPOS, Color.Black);
 
         _mapRenderer.Draw(path);
