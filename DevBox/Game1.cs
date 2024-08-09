@@ -112,25 +112,55 @@ public class Game1 : Game
         //Vector2 targetPos = new Vector2(path[currentPathIndex].X, path[currentPathIndex].Y);  //TOOK OUT OF LOOP
         //Vector2 direction = Vector2.Normalize(_targetPos - _player.Position); // TOOK OUT OF LOOP
         // Check if there are remaining points in the path
-        bool hello = true;
+
         while(EndOfPath)
             {
                 //currentPathIndex++;
                 if(currentPathIndex  + 1 < path.Count)
                 {
                     
-                    _targetPos.X = path[currentPathIndex].X;
-                    _targetPos.Y = path[currentPathIndex].Y;
+                    _targetPos.X = path[5].X;
+                    _targetPos.Y = path[5].Y;
 
                     Vector2 direction = Vector2.Normalize(_targetPos - _player.Position);
 
 
-                    _player.Velocity = direction * speed;
-                    _position += _player.Velocity;
-                    if ( _player.Velocity == Vector2.Zero)
+                    //_player.Velocity = direction * speed;
+                   // _position += _player.Velocity;
+                   //_position = _targetPos * 16;
+
+                   
+                    //if ( _player.Velocity == Vector2.Zero && _targetPos == _player.Position)
+                    if (_player.Position != _targetPos)
+                    {
+                        Console.WriteLine("here!!!!!!");
+                        Console.WriteLine(_player.Position);
+
+                        _player.Velocity = direction * speed;
+                        _position += _player.Velocity;
+                        _player.Position.X += path[currentPathIndex].X;
+                        _player.Position.Y += path[currentPathIndex].Y;
+
+
+                        currentPathIndex++;
+                    }
+
+                    else
+                    {
+                        _player.Velocity = Vector2.Zero;
+                    }
+
+                    /*
                     {
                         Console.WriteLine("Velocity is Zero");
+                        Console.WriteLine(_player.Position);
+                        Console.WriteLine(_targetPos);
                     }
+                    else
+                    {
+                        Console.WriteLine(_position);
+                    }
+                    */
                     
 
 
@@ -138,7 +168,7 @@ public class Game1 : Game
 
                     //Console.WriteLine("From the if loop in update Direction" + direction);
 
-                    //_position += direction * speed;
+                   /* //_position += direction * speed;
                    // _player.Position += targetPos * 1
                     //Console.WriteLine("From the if loop in update Position" + _position);  
                     //Console.WriteLine("players position: " +_player.Position );
@@ -147,8 +177,8 @@ public class Game1 : Game
                     Console.WriteLine("Target Position"+_targetPos + " player POS "+_player.Position);
                     Console.WriteLine("Current path index" +currentPathIndex+ " and path count"+path.Count); 
                     Console.WriteLine("Distance to target" + Vector2.Distance(_player.Position, _targetPos));
-                    Console.WriteLine(path.Count); 
-                    currentPathIndex++;
+                    Console.WriteLine(path.Count); */
+                    //currentPathIndex++;
 
 
                 }
@@ -158,6 +188,7 @@ public class Game1 : Game
                     EndOfPath = false;
                     //_player.Velocity = Vector2.Zero;
                     Console.WriteLine("leaving loop");
+                    //Console.WriteLine(_player.Position);
                     //return;
                     
                 }
@@ -181,11 +212,9 @@ public class Game1 : Game
             //Console.WriteLine(point);
         string posText = $"X: {_player.Position.X}, Y: {_player.Position.Y}";
         string velText = $"Velocity {_player.Velocity}";
-        string testText = "This is a test of the font kerning on MAC OS for mongame abcdefghijklmnopqrstuvwxyz";
         //string playText = $"Player pos{_player.Position}";
         _spriteBatch.DrawString(_debugFont, posText, _debugFontPOS, Color.Black);
         _spriteBatch.DrawString(_debugFont , velText, _velFontPOS, Color.Black);
-        _spriteBatch.DrawString(_debugFont, testText, new Vector2(400, 150), Color.White);
        // _spriteBatch.DrawString(_debugFont, playText, _playerFontPOS, Color.Black);
 
         _mapRenderer.Draw(path);
