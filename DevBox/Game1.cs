@@ -105,15 +105,12 @@ public class Game1 : Game
             Exit();
 
         float speed = 2f; //controls the speed of the sprite 
-        Console.WriteLine(path.Count);
-
         // Check if there are remaining points in the path
         if (currentPathIndex  < path.Count)
         {
-            Vector2 targetPos = new Vector2(path[currentPathIndex].X * _map.GetCellSize(), path[currentPathIndex].Y * _map.GetCellSize()); //have to convert the points from grid (* by 16 in this case)
-            Console.WriteLine("target pos" + targetPos);
+            //have to convert the points from grid (* by 16 in this case)
+            Vector2 targetPos = new Vector2(path[currentPathIndex].X * _map.GetCellSize(), path[currentPathIndex].Y * _map.GetCellSize()); 
             Vector2 direction = Vector2.Normalize(targetPos - _player.Position);
-            Console.WriteLine("in the first if");
 
             if (_player.Position != targetPos)
             {
