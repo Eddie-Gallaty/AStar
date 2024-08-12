@@ -136,8 +136,8 @@ namespace DevBox.Tiles
             //below im calculating Manhattan distance between two nodes
            return Math.Abs(from.Position.X - to.Position.X) + Math.Abs(from.Position.Y - to.Position.Y);
            // Euclidean distance (comment for manhattan )
-          //  int dx = Math.Abs(from.Position.X - to.Position.X);
-           // int dy = Math.Abs(from.Position.Y - to.Position.Y);
+            //int dx = Math.Abs(from.Position.X - to.Position.X);
+            //int dy = Math.Abs(from.Position.Y - to.Position.Y);
             //return (int)Math.Sqrt(dx * dx + dy * dy);
 
         }

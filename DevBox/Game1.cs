@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq.Expressions;
+using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using DevBox.Global;
@@ -16,6 +18,7 @@ namespace DevBox;
 
 public class Game1 : Game
 {
+
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
@@ -37,6 +40,11 @@ public class Game1 : Game
 
     private AStar astar;
 
+    private Vector2 _velocity;
+    private Vector2 _targetPos; 
+    private Vector2 _velFontPOS;
+    private Vector2 _playerFontPOS;
+
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -49,9 +57,12 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-       // _position = new Vector2(0, 0);
-        _map = new Map(20, 20, 16);
+        _position = new Vector2(0, 0);
+        _map = new Map(25, 25, 16);
         _debugFontPOS = new Vector2(400, 50);
+        _velFontPOS = new Vector2(400, 100);
+        _playerFontPOS = new Vector2(400, 150);
+        _targetPos = new Vector2(0,0);
         
 
         base.Initialize();
@@ -83,57 +94,49 @@ public class Game1 : Game
         _player.Input.Up = Keys.W;
         _player.Input.Down = Keys.S;
 
-        //*/
-        
 
-        // TODO: use this.Content to load your game content here
-        currentPathIndex = 0;
+
     }
     
 
-protected override void Update(GameTime gameTime)
-{
-    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-        Exit();
-
-    _player.Update(); // Update player logic (input handling, etc.)
-    bool EndOfPath = true;
-
-    // Check if there are remaining points in the path
-    while(EndOfPath)
+    protected override void Update(GameTime gameTime)
     {
-        //currentPathIndex++;
-        if(currentPathIndex +1 < path.Count)
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            Exit();
+
+        float speed = 2f; //controls the speed of the sprite 
+        // Check if there are remaining points in the path
+        if (currentPathIndex  < path.Count)
         {
-            
-            Vector2 targetPos = new Vector2(path[currentPathIndex].X, path[currentPathIndex].Y);
-            Vector2 direction = Vector2.Normalize(targetPos - _position);
-            float speed = .01f;
-            //Console.WriteLine("From the if loop in update Direction" + direction);
+            //have to convert the points from grid (* by 16 in this case)
+            Vector2 targetPos = new Vector2(path[currentPathIndex].X * _map.GetCellSize(), path[currentPathIndex].Y * _map.GetCellSize()); 
+            Vector2 direction = Vector2.Normalize(targetPos - _player.Position);
 
-            //_position += direction * speed;
-            _player.Position += targetPos;
-            //Console.WriteLine("From the if loop in update Position" + _position);  
-            //Console.WriteLine("players position: " +_player.Position );
-            Console.WriteLine("Target Position"+targetPos + " player POS "+_player.Position);
-            Console.WriteLine("Current path index" +currentPathIndex+ " and path count"+path.Count); 
-            Console.WriteLine("Distance to target" + Vector2.Distance(_player.Position, targetPos));
-            Console.WriteLine(path.Count); 
-            currentPathIndex++;         
+            if (_player.Position != targetPos)
+            {
+                Vector2 Direction = targetPos - _player.Position;
+                Direction.Normalize();
+                
+                if (Vector2.Distance(_player.Position, targetPos) <= speed)
+                {
+                    _player.Position = targetPos;
+                    currentPathIndex++;
+                }
+                else
+                {
+                    _player.Position += Direction * speed;
+                }
 
-
+            }
+            else
+            {
+                _player.Position = targetPos;
+                currentPathIndex++;
+            }
         }
-        else
-        {
-            EndOfPath = false;
-            Console.WriteLine("leaving loop");
-            //return;
-            
-        }
-    }
-
-    base.Update(gameTime);
-}
+        
+        base.Update(gameTime);
+    }   
 
     protected override void Draw(GameTime gameTime)
     {
@@ -142,22 +145,20 @@ protected override void Update(GameTime gameTime)
 
         // TODO: Add your drawing code here
         _spriteBatch.Begin();
-      //  _spriteBatch.Draw(_heroSprite, _position, Color.White);
-        //_mapRenderer.Draw(path);
-            //Console.WriteLine(point);
         string posText = $"X: {_player.Position.X}, Y: {_player.Position.Y}";
+        string velText = $"Velocity {_player.Velocity}";
         _spriteBatch.DrawString(_debugFont, posText, _debugFontPOS, Color.Black);
+        _spriteBatch.DrawString(_debugFont , velText, _velFontPOS, Color.Black);
         _mapRenderer.Draw(path);
         _player.Draw();
         _spriteBatch.End();
-
         base.Draw(gameTime);
     }
 
     private void FindandUsePath()
     {
         Point start = new Point(0, 0); // start position
-        Point goal = new Point(19, 19); //goal
+        Point goal = new Point(10,19); //goal
 
         //find optimal path
 
