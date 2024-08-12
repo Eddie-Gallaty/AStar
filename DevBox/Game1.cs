@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq.Expressions;
+using System.Net.Http.Headers;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using DevBox.Global;
 using DevBox.Inputs;
@@ -15,6 +18,7 @@ namespace DevBox;
 
 public class Game1 : Game
 {
+
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
@@ -27,10 +31,19 @@ public class Game1 : Game
     private List<Point> path; 
     private MapRenderer _mapRenderer;
 
+    private Vector2 _debugFontPOS;
+
+    private SpriteFont _debugFont;
+
     //this is used to hold the index of path
     private int currentPathIndex;
 
     private AStar astar;
+
+    private Vector2 _velocity;
+    private Vector2 _targetPos; 
+    private Vector2 _velFontPOS;
+    private Vector2 _playerFontPOS;
 
     public Game1()
     {
@@ -44,8 +57,13 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-        _position = new Vector2(300, 300);
-        _map = new Map(20, 20, 16);
+        _position = new Vector2(0, 0);
+        _map = new Map(25, 25, 16);
+        _debugFontPOS = new Vector2(400, 50);
+        _velFontPOS = new Vector2(400, 100);
+        _playerFontPOS = new Vector2(400, 150);
+        _targetPos = new Vector2(0,0);
+        
 
         base.Initialize();
     }
@@ -57,6 +75,7 @@ public class Game1 : Game
         _heroSprite = Content.Load<Texture2D>("hero");
         _oneTile = Content.Load<Texture2D>("tile3");
         _zeroTile = Content.Load<Texture2D>("tile1");
+        _debugFont = Content.Load<SpriteFont>("debugFont");
         _map.GenerateRandomMap();
         
         _mapRenderer = new MapRenderer(_oneTile, _zeroTile, _map);
@@ -68,18 +87,15 @@ public class Game1 : Game
   
         //uncomment for keyboard control
 
-        /*_player = new Player(_heroSprite, _position);
+        _player = new Player(_heroSprite, _position);
         _player.Input = new Input();
         _player.Input.Left = Keys.A;
         _player.Input.Right = Keys.D;
         _player.Input.Up = Keys.W;
         _player.Input.Down = Keys.S;
 
-        */
-        
 
-        // TODO: use this.Content to load your game content here
-        currentPathIndex = 0;
+
     }
     
 
@@ -88,22 +104,39 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        // TODO: Add your update logic here
-        //_player.Update();
-        //FindandUsePath();
-
-        if(currentPathIndex < path.Count)
+        float speed = 2f; //controls the speed of the sprite 
+        // Check if there are remaining points in the path
+        if (currentPathIndex  < path.Count)
         {
-            Vector2 targetPos = new Vector2(path[currentPathIndex].X, path[currentPathIndex].Y);
-            Vector2 direction = Vector2.Normalize(targetPos - _position);
-            float speed = 1f;
+            //have to convert the points from grid (* by 16 in this case)
+            Vector2 targetPos = new Vector2(path[currentPathIndex].X * _map.GetCellSize(), path[currentPathIndex].Y * _map.GetCellSize()); 
+            Vector2 direction = Vector2.Normalize(targetPos - _player.Position);
 
-            _position += direction * speed;
+            if (_player.Position != targetPos)
+            {
+                Vector2 Direction = targetPos - _player.Position;
+                Direction.Normalize();
+                
+                if (Vector2.Distance(_player.Position, targetPos) <= speed)
+                {
+                    _player.Position = targetPos;
+                    currentPathIndex++;
+                }
+                else
+                {
+                    _player.Position += Direction * speed;
+                }
 
+            }
+            else
+            {
+                _player.Position = targetPos;
+                currentPathIndex++;
+            }
         }
-
+        
         base.Update(gameTime);
-    }
+    }   
 
     protected override void Draw(GameTime gameTime)
     {
@@ -112,21 +145,20 @@ public class Game1 : Game
 
         // TODO: Add your drawing code here
         _spriteBatch.Begin();
-      //  _spriteBatch.Draw(_heroSprite, _position, Color.White);
-        //_mapRenderer.Draw(path);
-        
-            //Console.WriteLine(point);
+        string posText = $"X: {_player.Position.X}, Y: {_player.Position.Y}";
+        string velText = $"Velocity {_player.Velocity}";
+        _spriteBatch.DrawString(_debugFont, posText, _debugFontPOS, Color.Black);
+        _spriteBatch.DrawString(_debugFont , velText, _velFontPOS, Color.Black);
         _mapRenderer.Draw(path);
-        //_player.Draw();
+        _player.Draw();
         _spriteBatch.End();
-
         base.Draw(gameTime);
     }
 
     private void FindandUsePath()
     {
         Point start = new Point(0, 0); // start position
-        Point goal = new Point(19, 19); //goal
+        Point goal = new Point(10,19); //goal
 
         //find optimal path
 
@@ -146,7 +178,7 @@ public class Game1 : Game
             //output path coordinates  (DEBUG)
             foreach (Point point in path)
             {
-                Console.WriteLine($"Path Position: {point}");
+                //Console.WriteLine($"Path Position: {point}");
             }
 
             //todo here such as move sprite etc
