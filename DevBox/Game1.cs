@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq.Expressions;
 using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
@@ -93,11 +94,8 @@ public class Game1 : Game
         _player.Input.Up = Keys.W;
         _player.Input.Down = Keys.S;
 
-        //*/
-        
 
-        // TODO: use this.Content to load your game content here
-        //currentPathIndex = 0;
+
     }
     
 
@@ -106,99 +104,42 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        float speed = 1f;
-        _player.Update(); // Update player logic (input handling, etc.)
-        bool EndOfPath = true;
-        //Vector2 targetPos = new Vector2(path[currentPathIndex].X, path[currentPathIndex].Y);  //TOOK OUT OF LOOP
-        //Vector2 direction = Vector2.Normalize(_targetPos - _player.Position); // TOOK OUT OF LOOP
+        float speed = 2f; //controls the speed of the sprite 
+        Console.WriteLine(path.Count);
+
         // Check if there are remaining points in the path
+        if (currentPathIndex  < path.Count)
+        {
+            Vector2 targetPos = new Vector2(path[currentPathIndex].X * _map.GetCellSize(), path[currentPathIndex].Y * _map.GetCellSize()); //have to convert the points from grid (* by 16 in this case)
+            Console.WriteLine("target pos" + targetPos);
+            Vector2 direction = Vector2.Normalize(targetPos - _player.Position);
+            Console.WriteLine("in the first if");
 
-        while(EndOfPath)
+            if (_player.Position != targetPos)
             {
-                //currentPathIndex++;
-                if(currentPathIndex  + 1 < path.Count)
-                {
-                    
-                    _targetPos.X = path[5].X;
-                    _targetPos.Y = path[5].Y;
-
-                    Vector2 direction = Vector2.Normalize(_targetPos - _player.Position);
-
-
-                    //_player.Velocity = direction * speed;
-                   // _position += _player.Velocity;
-                   //_position = _targetPos * 16;
-
-                   
-                    //if ( _player.Velocity == Vector2.Zero && _targetPos == _player.Position)
-                    if (_player.Position != _targetPos)
-                    {
-                        Console.WriteLine("here!!!!!!");
-                        Console.WriteLine(_player.Position);
-
-                        _player.Velocity = direction * speed;
-                        _position += _player.Velocity;
-                        _player.Position.X += path[currentPathIndex].X;
-                        _player.Position.Y += path[currentPathIndex].Y;
-
-
-                        currentPathIndex++;
-                    }
-
-                    else
-                    {
-                        _player.Velocity = Vector2.Zero;
-                    }
-
-                    /*
-                    {
-                        Console.WriteLine("Velocity is Zero");
-                        Console.WriteLine(_player.Position);
-                        Console.WriteLine(_targetPos);
-                    }
-                    else
-                    {
-                        Console.WriteLine(_position);
-                    }
-                    */
-                    
-
-
-
-
-                    //Console.WriteLine("From the if loop in update Direction" + direction);
-
-                   /* //_position += direction * speed;
-                   // _player.Position += targetPos * 1
-                    //Console.WriteLine("From the if loop in update Position" + _position);  
-                    //Console.WriteLine("players position: " +_player.Position );
-                    Console.WriteLine("Player Velocity: " + _player.Velocity);
-                    Console.WriteLine("Direction: "+ direction);
-                    Console.WriteLine("Target Position"+_targetPos + " player POS "+_player.Position);
-                    Console.WriteLine("Current path index" +currentPathIndex+ " and path count"+path.Count); 
-                    Console.WriteLine("Distance to target" + Vector2.Distance(_player.Position, _targetPos));
-                    Console.WriteLine(path.Count); */
-                    //currentPathIndex++;
-
-
-                }
+                Vector2 Direction = targetPos - _player.Position;
+                Direction.Normalize();
                 
+                if (Vector2.Distance(_player.Position, targetPos) <= speed)
+                {
+                    _player.Position = targetPos;
+                    currentPathIndex++;
+                }
                 else
                 {
-                    EndOfPath = false;
-                    //_player.Velocity = Vector2.Zero;
-                    Console.WriteLine("leaving loop");
-                    //Console.WriteLine(_player.Position);
-                    //return;
-                    
+                    _player.Position += Direction * speed;
                 }
-            }
-        
-            
-        
 
+            }
+            else
+            {
+                _player.Position = targetPos;
+                currentPathIndex++;
+            }
+        }
+        
         base.Update(gameTime);
-    }
+    }   
 
     protected override void Draw(GameTime gameTime)
     {
@@ -207,27 +148,20 @@ public class Game1 : Game
 
         // TODO: Add your drawing code here
         _spriteBatch.Begin();
-      //  _spriteBatch.Draw(_heroSprite, _position, Color.White);
-        //_mapRenderer.Draw(path);
-            //Console.WriteLine(point);
         string posText = $"X: {_player.Position.X}, Y: {_player.Position.Y}";
         string velText = $"Velocity {_player.Velocity}";
-        //string playText = $"Player pos{_player.Position}";
         _spriteBatch.DrawString(_debugFont, posText, _debugFontPOS, Color.Black);
         _spriteBatch.DrawString(_debugFont , velText, _velFontPOS, Color.Black);
-       // _spriteBatch.DrawString(_debugFont, playText, _playerFontPOS, Color.Black);
-
         _mapRenderer.Draw(path);
         _player.Draw();
         _spriteBatch.End();
-
         base.Draw(gameTime);
     }
 
     private void FindandUsePath()
     {
         Point start = new Point(0, 0); // start position
-        Point goal = new Point(19, 19); //goal
+        Point goal = new Point(10,19); //goal
 
         //find optimal path
 
