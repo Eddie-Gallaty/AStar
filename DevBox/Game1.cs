@@ -110,8 +110,6 @@ public class Game1 : Game
             Exit();
 
         float speed = 2f; //controls the speed of the sprite 
-        Console.WriteLine(path.Count);
-
         // Check if there are remaining points in the path
         if (currentPathIndex  < path.Count)
         {
@@ -119,6 +117,7 @@ public class Game1 : Game
             Console.WriteLine("target pos" + targetPos);
             Vector2 direction = Vector2.Normalize(targetPos - _enemy.Position);
             Console.WriteLine("in the first if");
+
 
             if (_enemy.Position != targetPos)
             {
