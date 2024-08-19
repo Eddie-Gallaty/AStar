@@ -26,6 +26,8 @@ public class Game1 : Game
     private Texture2D _oneTile;
     private Texture2D _zeroTile;
     private Player _player;
+    private Enemy _enemy;
+    private Vector2 _enemyPosition;
     private Vector2 _position;
     private Map _map;
     private List<Point> path; 
@@ -57,7 +59,8 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-        _position = new Vector2(0, 0);
+        _enemyPosition = new Vector2(0,0);
+        _position = new Vector2(50, 100);
         _map = new Map(25, 25, 16);
         _debugFontPOS = new Vector2(400, 50);
         _velFontPOS = new Vector2(400, 100);
@@ -87,6 +90,8 @@ public class Game1 : Game
   
         //uncomment for keyboard control
 
+        _enemy = new Enemy(_heroSprite, _enemyPosition);
+
         _player = new Player(_heroSprite, _position);
         _player.Input = new Input();
         _player.Input.Left = Keys.A;
@@ -108,33 +113,35 @@ public class Game1 : Game
         // Check if there are remaining points in the path
         if (currentPathIndex  < path.Count)
         {
-            //have to convert the points from grid (* by 16 in this case)
-            Vector2 targetPos = new Vector2(path[currentPathIndex].X * _map.GetCellSize(), path[currentPathIndex].Y * _map.GetCellSize()); 
-            Vector2 direction = Vector2.Normalize(targetPos - _player.Position);
+            Vector2 targetPos = new Vector2(path[currentPathIndex].X * _map.GetCellSize(), path[currentPathIndex].Y * _map.GetCellSize()); //have to convert the points from grid (* by 16 in this case)
+            Console.WriteLine("target pos" + targetPos);
+            Vector2 direction = Vector2.Normalize(targetPos - _enemy.Position);
+            Console.WriteLine("in the first if");
 
-            if (_player.Position != targetPos)
+
+            if (_enemy.Position != targetPos)
             {
-                Vector2 Direction = targetPos - _player.Position;
+                Vector2 Direction = targetPos - _enemy.Position;
                 Direction.Normalize();
                 
-                if (Vector2.Distance(_player.Position, targetPos) <= speed)
+                if (Vector2.Distance(_enemy.Position, targetPos) <= speed)
                 {
-                    _player.Position = targetPos;
+                    _enemy.Position = targetPos;
                     currentPathIndex++;
                 }
                 else
                 {
-                    _player.Position += Direction * speed;
+                    _enemy.Position += Direction * speed;
                 }
 
             }
             else
             {
-                _player.Position = targetPos;
+                _enemy.Position = targetPos;
                 currentPathIndex++;
             }
         }
-        
+        _player.Update();
         base.Update(gameTime);
     }   
 
@@ -145,11 +152,12 @@ public class Game1 : Game
 
         // TODO: Add your drawing code here
         _spriteBatch.Begin();
-        string posText = $"X: {_player.Position.X}, Y: {_player.Position.Y}";
-        string velText = $"Velocity {_player.Velocity}";
+        string posText = $"X: {_enemy.Position.X}, Y: {_enemy.Position.Y}";
+        string velText = $"Velocity {_enemy.Velocity}";
         _spriteBatch.DrawString(_debugFont, posText, _debugFontPOS, Color.Black);
         _spriteBatch.DrawString(_debugFont , velText, _velFontPOS, Color.Black);
         _mapRenderer.Draw(path);
+        _enemy.Draw();
         _player.Draw();
         _spriteBatch.End();
         base.Draw(gameTime);
@@ -158,7 +166,7 @@ public class Game1 : Game
     private void FindandUsePath()
     {
         Point start = new Point(0, 0); // start position
-        Point goal = new Point(10,19); //goal
+        Point goal = new Point(20,20); //goal
 
         //find optimal path
 
